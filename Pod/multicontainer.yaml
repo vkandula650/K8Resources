@@ -11,4 +11,5 @@ spec:
       - containerPort: 80
  - image: almalinux
    name: almalinux
+   command: ["sleep","10"]
 ---
