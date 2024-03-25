@@ -22,7 +22,7 @@ metadata:
   name: roboshop-admin-rolebinding
   namespace: roboshop
 subjects:
-- kind: user
+- kind: User
   name: eksrbac
   namespace: roboshop
 roleRef:
