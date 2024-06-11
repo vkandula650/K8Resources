@@ -8,7 +8,7 @@ metadata:
 spec:
   containers:
   - name: catalogue
-    image: vkandula650/catalogue:v1
+    image: vkandula650/catalogue:k8
     imagePullPolicy: Always
     resources:
           requests:
