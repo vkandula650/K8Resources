@@ -12,15 +12,15 @@ metadata:
   name: mysql-secret
 type: Opaque
 data:
-  username: c2hpcHBpbmc=  # base64 encoded value of "admin"
-  password: c2VjcmV0  # base64 encoded value of "1f2d1e2e67df"
+  username: c2hpcHBpbmc=  # base64 encoded value of "shipping"
+  password: c2VjcmV0  # base64 encoded value of "secret"
 ---
 apiVersion: v1
 kind: Pod
 metadata:
   name: mysql
   labels:
-    name: mysql
+    app: mysql
     tier: db
 spec:
   containers:
@@ -29,17 +29,25 @@ spec:
     imagePullPolicy: Always
     envFrom:
     - configMapRef:
-        name: mysql-config    
-    - secretKeyRef:
-        name: mysql-secret
+        name: mysql-config
+    env:
+    - name: MYSQL_USERNAME
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
           key: username
+    - name: MYSQL_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: mysql-secret
+          key: password
     resources:
-          requests:
-            memory: "64Mi"
-            cpu: "250m"
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
@@ -47,10 +55,9 @@ metadata:
   name: mysql
 spec:
   selector:
-    name: mysql
+    app: mysql
     tier: db
   ports:
   - protocol: TCP
     port: 80
     targetPort: 3306
-
