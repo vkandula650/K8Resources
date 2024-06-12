@@ -25,7 +25,7 @@ metadata:
 spec:
   containers:
   - name: mysql
-    image: vkandula650/mysql:v1
+    image: vkandula650/mysql:k8
     imagePullPolicy: Always
     envFrom:
     - configMapRef:
