@@ -12,8 +12,8 @@ metadata:
   name: mysql-secret
 type: Opaque
 data:
-  username: c2hpcHBpbmc=  # base64 encoded value of "shipping"
-  password: c2VjcmV0  # base64 encoded value of "secret"
+  MYSQL_USER: c2hpcHBpbmc=
+  MYSQL_PASSWORD: c2VjcmV0
 ---
 apiVersion: v1
 kind: Pod
@@ -30,17 +30,8 @@ spec:
     envFrom:
     - configMapRef:
         name: mysql-config
-    env:
-    - name: MYSQL_USERNAME
-      valueFrom:
-        secretKeyRef:
-          name: mysql-secret
-          key: username
-    - name: MYSQL_PASSWORD
-      valueFrom:
-        secretKeyRef:
-          name: mysql-secret
-          key: password
+    - secretRef:
+        name: mysql-secret
     resources:
       requests:
         memory: "64Mi"
