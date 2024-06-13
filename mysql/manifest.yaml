@@ -1,11 +1,10 @@
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: mysql-config
 data:
-  MYSQL_DATABASE: "cities"
   MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+  MYSQL_DATABASE: "cities"
 ---
 apiVersion: v1
 kind: Secret
@@ -21,20 +20,25 @@ kind: Pod
 metadata:
   name: mysql
   labels:
-    name: mysql
+    app: mysql
     tier: db
 spec:
   containers:
   - name: mysql
+    image: vkandula650/mysql:k8
     imagePullPolicy: Always
-    image: techworldwithsiva/mysql:k8
     envFrom:
     - configMapRef:
         name: mysql-config
     - secretRef:
         name: mysql-secret
-    ports:
-      - containerPort: 3306
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
 ---
 apiVersion: v1
 kind: Service
@@ -42,9 +46,9 @@ metadata:
   name: mysql
 spec:
   selector:
-    name: mysql
+    app: mysql
     tier: db
   ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
+  - protocol: TCP
+    port: 80
+    targetPort: 3306
