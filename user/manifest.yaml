@@ -16,7 +16,7 @@ metadata:
 spec:
   containers:
   - name: user
-    image: vkandula650/user:k8
+    image: techworldwithsiva/user:v1
     imagePullPolicy: Always
     envFrom:
     - configMapRef:
